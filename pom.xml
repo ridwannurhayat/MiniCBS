@@ -25,6 +25,10 @@
         <quarkus.platform.version>3.28.2</quarkus.platform.version>
         <surefire-plugin.version>3.1.2</surefire-plugin.version>
         <compiler-plugin.version>3.11.0</compiler-plugin.version>
+        <lombok.version>1.18.42</lombok.version>
+        <jakarta-cdi.version>4.1.0</jakarta-cdi.version>
+        <jakarta-persistence.version>3.2.0</jakarta-persistence.version>
+        <jakarta-validation.version>3.1.1</jakarta-validation.version>
     </properties>
 
     <dependencyManagement>
@@ -36,7 +40,28 @@
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
+            <dependency>
+                <groupId>jakarta.enterprise</groupId>
+                <artifactId>jakarta.enterprise.cdi-api</artifactId>
+                <version>${jakarta-cdi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.persistence</groupId>
+                <artifactId>jakarta.persistence-api</artifactId>
+                <version>${jakarta-persistence.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.validation</groupId>
+                <artifactId>jakarta.validation-api</artifactId>
+                <version>${jakarta-validation.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
+
 
 </project>
