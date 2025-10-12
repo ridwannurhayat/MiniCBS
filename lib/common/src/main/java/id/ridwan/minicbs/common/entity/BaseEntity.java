@@ -24,6 +24,7 @@ public abstract class BaseEntity {
     private LocalDateTime updateTime;
 
     @Setter
+    @Column(name = "active", nullable = false)
     private Boolean active = true;
 
 }
