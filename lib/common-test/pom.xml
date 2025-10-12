@@ -5,38 +5,30 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>id.ridwan.minicbs</groupId>
-        <artifactId>core</artifactId>
+        <artifactId>lib</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>loan-core</artifactId>
+    <artifactId>common-test</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>id.ridwan.minicbs</groupId>
-            <artifactId>loan-lib</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-junit5</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-rest</artifactId>
+            <artifactId>quarkus-test-common</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-rest-jackson</artifactId>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
         </dependency>
 
+        <!-- ✅ Testcontainers -->
         <dependency>
-            <groupId>id.ridwan.minicbs</groupId>
-            <artifactId>common-test</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>test</scope>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-jdbc-postgresql</artifactId>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
 </project>
