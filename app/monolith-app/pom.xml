@@ -16,10 +16,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
             <groupId>id.ridwan.minicbs</groupId>
             <artifactId>loan-core</artifactId>
             <version>1.0-SNAPSHOT</version>
