@@ -16,9 +16,9 @@
     </modules>
 
     <properties>
-        <java.version>25</java.version>
-        <maven.compiler.source>25</maven.compiler.source>
-        <maven.compiler.target>25</maven.compiler.target>
+        <java.version>24</java.version>
+        <maven.compiler.source>24</maven.compiler.source>
+        <maven.compiler.target>24</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
@@ -132,6 +132,11 @@
                             <version>0.2.0</version>
                         </path>
                     </annotationProcessorPaths>
+                    <compilerArgs>
+                        <compilerArg>
+                            -Amapstruct.unmappedTargetPolicy=IGNORE
+                        </compilerArg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
         </plugins>

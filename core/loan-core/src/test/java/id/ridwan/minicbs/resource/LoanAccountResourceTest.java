@@ -53,7 +53,7 @@ class LoanAccountResourceTest extends AbstractIntegrationTest {
     @Test
     void testListLoanAccounts() {
         given()
-                .when().get("/api/loan-accounts")
+                .when().get("/loan-accounts")
                 .then()
                 .statusCode(200)
                 .body("$", not(empty()));

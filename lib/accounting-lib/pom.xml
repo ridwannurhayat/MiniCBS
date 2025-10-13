@@ -5,20 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>id.ridwan.minicbs</groupId>
-        <artifactId>MiniCBS</artifactId>
+        <artifactId>lib</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>lib</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>loan-lib</module>
-        <module>common</module>
-        <module>common-test</module>
-        <module>accounting-lib</module>
-    </modules>
+    <artifactId>accounting-lib</artifactId>
 
-    <properties>
-    </properties>
-
+    <dependencies>
+        <dependency>
+            <groupId>id.ridwan.minicbs</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>
