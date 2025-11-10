@@ -5,31 +5,29 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>id.ridwan.minicbs</groupId>
-        <artifactId>app</artifactId>
+        <artifactId>grpc-server</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>monolith-app</artifactId>
+    <artifactId>transaction-grpc-server</artifactId>
 
     <properties>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>id.ridwan.minicbs</groupId>
-            <artifactId>loan-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        
-        <!--
-        <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-jdbc-postgresql</artifactId>
         </dependency>
-        -->
         <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-reactive-pg-client</artifactId>
+            <groupId>id.ridwan.minicbs</groupId>
+            <artifactId>transaction-grpc-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>id.ridwan.minicbs</groupId>
+            <artifactId>loan-lib</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

@@ -1,10 +1,10 @@
 package id.ridwan.minicbs.loan.account.installment;
 
-import io.quarkus.hibernate.orm.panache.PanacheQuery;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import io.quarkus.hibernate.reactive.panache.PanacheQuery;
+import io.quarkus.hibernate.reactive.panache.PanacheRepositoryBase;
+import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -12,21 +12,16 @@ import java.util.Map;
 import java.util.UUID;
 
 @ApplicationScoped
-public class LoanInstallmentRepository implements PanacheRepository<LoanInstallment> {
+public class LoanInstallmentRepository implements PanacheRepositoryBase<LoanInstallment, UUID> {
 
-    public List<LoanInstallment> findByLoanAccountId(UUID loanAccountId) {
+    public Uni<List<LoanInstallment>> findByLoanAccountId(UUID loanAccountId) {
         return list("loanAccount.id", loanAccountId);
     }
 
-    public LoanInstallment findById(UUID id) {
-        return find("id", id).firstResult();
-    }
-
     public PanacheQuery<LoanInstallment> findPagedAndFiltered(
+            UUID loanAccountId,
             LocalDate fromDate,
             LocalDate toDate,
-            BigDecimal minAmount,
-            BigDecimal maxAmount,
             Integer page,
             Integer size
     ) {
@@ -43,14 +38,9 @@ public class LoanInstallmentRepository implements PanacheRepository<LoanInstallm
             params.put("toDate", toDate);
         }
 
-        if (minAmount != null) {
-            queryBuilder.append(" and amount >= :minAmount");
-            params.put("minAmount", minAmount);
-        }
-
-        if (maxAmount != null) {
-            queryBuilder.append(" and amount <= :maxAmount");
-            params.put("maxAmount", maxAmount);
+        if (loanAccountId != null) {
+            queryBuilder.append(" and loanAccount.id <= :loanAccountId");
+            params.put("loanAccountId", loanAccountId);
         }
 
         PanacheQuery<LoanInstallment> query = find(queryBuilder.toString(), params);

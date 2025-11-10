@@ -25,6 +25,10 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-rest-jackson</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.smallrye.reactive</groupId>
+            <artifactId>mutiny</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>id.ridwan.minicbs</groupId>
@@ -37,6 +41,5 @@
             <artifactId>quarkus-jdbc-postgresql</artifactId>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 </project>

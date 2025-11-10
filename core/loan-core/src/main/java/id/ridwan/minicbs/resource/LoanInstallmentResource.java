@@ -2,15 +2,16 @@ package id.ridwan.minicbs.resource;
 
 import id.ridwan.minicbs.domain.installment.LoanInstallmentDto;
 import id.ridwan.minicbs.service.LoanInstallmentService;
+import io.smallrye.mutiny.Uni;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
 
-import java.util.List;
+import java.time.LocalDate;
+import java.util.Map;
 import java.util.UUID;
 
-@Path("/loan-installments")
+@Path("/loan-accounts/{loanAccountId}/loan-installments")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class LoanInstallmentResource {
@@ -19,33 +20,36 @@ public class LoanInstallmentResource {
     LoanInstallmentService service;
 
     @GET
-    public List<LoanInstallmentDto> listAll() {
-        return service.findAll();
+    public Uni<Map<String, Object>> listAll(
+            @PathParam("loanAccountId") UUID loanAccountId,
+            @QueryParam("fromDate") LocalDate fromDate,
+            @QueryParam("toDate") LocalDate toDate,
+            @QueryParam("page") Integer page,
+            @QueryParam("size") Integer size
+    ) {
+        return service.findPagedAndFiltered(loanAccountId, fromDate, toDate, page, size);
     }
 
     @GET
     @Path("/{id}")
-    public LoanInstallmentDto getById(@PathParam("id") UUID id) {
+    public Uni<LoanInstallmentDto> getById(@PathParam("id") UUID id) {
         return service.findById(id);
     }
 
     @POST
-    public Response create(LoanInstallmentDto dto) {
-        return Response.status(Response.Status.CREATED)
-                .entity(service.create(dto))
-                .build();
+    public Uni<LoanInstallmentDto> create(LoanInstallmentDto dto) {
+        return service.create(dto);
     }
 
     @PUT
     @Path("/{id}")
-    public LoanInstallmentDto update(@PathParam("id") UUID id, LoanInstallmentDto dto) {
+    public Uni<LoanInstallmentDto> update(@PathParam("id") UUID id, LoanInstallmentDto dto) {
         return service.update(id, dto);
     }
 
     @DELETE
     @Path("/{id}")
-    public Response delete(@PathParam("id") UUID id) {
-        service.delete(id);
-        return Response.noContent().build();
+    public Uni<Void> delete(@PathParam("id") UUID id) {
+        return service.delete(id);
     }
 }

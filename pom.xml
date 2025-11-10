@@ -13,6 +13,8 @@
         <module>app</module>
         <module>core</module>
         <module>lib</module>
+        <module>grpc-common</module>
+        <module>grpc-server</module>
     </modules>
 
     <properties>
@@ -141,4 +143,15 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>skip-tests</id>
+            <properties>
+                <skipTests>true</skipTests>
+                <!-- Or, to skip compiling tests as well: -->
+                <!-- <maven.test.skip>true</maven.test.skip> -->
+            </properties>
+        </profile>
+    </profiles>
 </project>

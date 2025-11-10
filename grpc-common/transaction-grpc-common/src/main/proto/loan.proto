@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+option java_package = "id.ridwan.minicbs.grpc";
+option java_outer_classname = "LoanProto";
+
+package loan;
+
+import "google/protobuf/empty.proto";  // To use Empty for void return type
+
+service LoanAccountService {
+    rpc create (CreateRequest) returns (LoanAccount);
+    rpc update (UpdateRequest) returns (LoanAccount);
+    rpc delete (DeleteRequest) returns (google.protobuf.Empty);
+}
+
+message CreateRequest {
+    LoanAccount loanAccount = 1;
+}
+
+message UpdateRequest {
+    string id = 1;
+    LoanAccount loanAccount = 2;
+}
+
+message DeleteRequest {
+    string id = 1;
+}
+
+message LoanAccount {
+    string id = 1;
+    string dueDate = 2;  // LocalDate as string in "yyyy-MM-dd"
+    LoanInterest interest = 3;
+    LoanRepayment repayment = 4;
+    repeated LoanDisbursement disbursements = 5;
+    repeated LoanInstallment installments = 6;
+}
+
+message LoanInterest {
+    string id = 1;
+    string rate = 2;  // BigDecimal as string to preserve precision
+}
+
+message LoanRepayment {
+    string id = 1;
+    RepaymentMethod repaymentMethod = 2;
+    int32 repaymentDay = 3;
+    RepaymentPeriod repaymentPeriod = 4;
+}
+
+// Enum for RepaymentMethod
+enum RepaymentMethod {
+    EQUAL_INSTALLMENT = 0;
+}
+
+message LoanDisbursement {
+    string id = 1;
+    string disbursementDate = 2;  // LocalDate as string in "yyyy-MM-dd"
+    string amount = 3;  // BigDecimal as string to preserve precision
+}
+
+message LoanInstallment {
+    string id = 1;
+    string installmentDate = 2;  // LocalDate as string in "yyyy-MM-dd"
+    string amount = 3;  // BigDecimal as string to preserve precision
+    string principal = 4;  // BigDecimal as string to preserve precision
+    string interest = 5;  // BigDecimal as string to preserve precision
+}
+
+enum RepaymentPeriod {
+    MONTHLY = 0;  // "M"
+    ANNUALLY = 1;  // "A"
+}

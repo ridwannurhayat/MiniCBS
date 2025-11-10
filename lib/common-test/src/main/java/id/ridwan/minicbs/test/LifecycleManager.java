@@ -10,7 +10,7 @@ public class LifecycleManager implements QuarkusTestResourceLifecycleManager {
 
     @Override
     public Map<String, String> start() {
-        postgres = new PostgreSQLContainer<>("postgres:15")
+        postgres = new PostgreSQLContainer<>("postgres:17")
                 .withDatabaseName("minicbs_test")
                 .withUsername("test")
                 .withPassword("test");

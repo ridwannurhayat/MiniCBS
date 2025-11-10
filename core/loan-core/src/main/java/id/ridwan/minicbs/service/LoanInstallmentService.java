@@ -4,17 +4,18 @@ import id.ridwan.minicbs.domain.installment.LoanInstallmentDto;
 import id.ridwan.minicbs.domain.installment.LoanInstallmentMapper;
 import id.ridwan.minicbs.loan.account.installment.LoanInstallment;
 import id.ridwan.minicbs.loan.account.installment.LoanInstallmentRepository;
+import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
 
 @ApplicationScoped
 public class LoanInstallmentService {
@@ -25,68 +26,71 @@ public class LoanInstallmentService {
     @Inject
     LoanInstallmentMapper mapper;
 
-    public List<LoanInstallmentDto> findAll() {
-        return repository.listAll().stream()
-                .map(mapper::toDto)
-                .toList();
+    public Uni<List<LoanInstallmentDto>> findAllByLoanAccountId(UUID loanAccountId) {
+
+        return repository.findByLoanAccountId(loanAccountId)
+                .onItem().transform(listOfLoanInstallment ->
+                    listOfLoanInstallment.stream()
+                            .map(mapper::toDto)
+                            .toList()
+                );
     }
 
-    public Map<String, Object> findPagedAndFiltered(
+    public Uni<Map<String, Object>> findPagedAndFiltered(
+            UUID loanAccountId,
             LocalDate fromDate,
             LocalDate toDate,
-            BigDecimal minAmount,
-            BigDecimal maxAmount,
             Integer page,
             Integer size
     ) {
-        var query = repository.findPagedAndFiltered(fromDate, toDate, minAmount, maxAmount, page, size);
+        var query = repository.findPagedAndFiltered(loanAccountId, fromDate, toDate, page, size);
 
-        List<LoanInstallmentDto> content = query.list().stream()
-                .map(mapper::toDto)
-                .toList();
+        return query.list().onItem().transform((listOfLoanInstallment) -> {
+            List<LoanInstallmentDto> content = listOfLoanInstallment.stream()
+                    .map(mapper::toDto)
+                    .toList();
 
-        Map<String, Object> result = new HashMap<>();
-        result.put("content", content);
-        result.put("page", page == null ? 0 : page);
-        result.put("size", size == null ? content.size() : size);
-        result.put("totalElements", query.count());
-        result.put("totalPages", query.pageCount());
-
-        return result;
+            Map<String, Object> temp = new HashMap<>();
+            temp.put("content", content);
+            temp.put("page", page == null ? 0 : page);
+            temp.put("size", size == null ? content.size() : size);
+            temp.put("totalElements", query.count());
+            temp.put("totalPages", query.pageCount());
+            return temp;
+        });
     }
 
-    public LoanInstallmentDto findById(UUID id) {
-        LoanInstallment entity = repository.findById(id);
-        if (entity == null) {
-            throw new NotFoundException("LoanInstallment not found");
-        }
-        return mapper.toDto(entity);
+    public Uni<LoanInstallmentDto> findById(UUID id) {
+        return this.findById(id, mapper::toDto);
     }
 
     @Transactional
-    public LoanInstallmentDto create(LoanInstallmentDto dto) {
+    public Uni<LoanInstallmentDto> create(LoanInstallmentDto dto) {
         LoanInstallment entity = mapper.toEntity(dto);
-        repository.persist(entity);
-        return mapper.toDto(entity);
+        return repository.persist(entity)
+                .onItem().ifNotNull().transform(mapper::toDto)
+                .onItem().ifNull().failWith(() -> new NotFoundException("LoanInstallment not created"));
     }
 
     @Transactional
-    public LoanInstallmentDto update(UUID id, LoanInstallmentDto dto) {
-        LoanInstallment entity = repository.findById(id);
-        if (entity == null) {
-            throw new NotFoundException("LoanInstallment not found");
-        }
-
-        mapper.updateEntityFromDto(dto, entity);
-        return mapper.toDto(entity);
+    public Uni<LoanInstallmentDto> update(UUID id, LoanInstallmentDto dto) {
+        return this.findById(id, entity -> {
+            mapper.updateEntityFromDto(dto, entity);
+            return mapper.toDto(entity);
+        });
     }
 
     @Transactional
-    public void delete(UUID id) {
-        LoanInstallment entity = repository.findById(id);
-        if (entity == null) {
-            throw new NotFoundException("LoanAccount not found");
-        }
-        entity.setActive(false);
+    public Uni<Void> delete(UUID id) {
+        return this.findById(id, (entity) -> {
+            entity.setActive(false);
+            return entity;
+        }).replaceWithVoid();
+    }
+
+    private <T> Uni<T> findById(UUID id, Function<LoanInstallment, T> func) {
+        return repository.findById(id)
+                .onItem().ifNotNull().transform(func)
+                .onItem().ifNull().failWith(() -> new NotFoundException("LoanInstallment not found"));
     }
 }
