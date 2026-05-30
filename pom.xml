@@ -11,8 +11,7 @@
 
     <modules>
         <module>app</module>
-        <module>core</module>
-        <module>lib</module>
+        <module>business-logic</module>
         <module>grpc-common</module>
         <module>grpc-server</module>
     </modules>

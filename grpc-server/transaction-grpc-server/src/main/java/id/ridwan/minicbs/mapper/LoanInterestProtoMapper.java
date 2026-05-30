@@ -1,15 +1,14 @@
 package id.ridwan.minicbs.mapper;
 
 import id.ridwan.minicbs.grpc.LoanProto;
-import id.ridwan.minicbs.loan.account.interest.LoanInterest;
+import id.ridwan.minicbs.domain.interest.LoanInterestDto;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "cdi", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface LoanInterestProtoMapper {
-    LoanInterest toEntity(LoanProto.LoanInterest proto);
+    LoanInterestDto toDto(LoanProto.LoanInterest proto);
 
-    LoanProto.LoanInterest toProto(LoanInterest entity);
+    LoanProto.LoanInterest toProto(LoanInterestDto dto);
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateEntityFromProto(LoanProto.LoanInterest proto, @MappingTarget LoanInterest entity);
+
 }

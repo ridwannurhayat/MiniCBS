@@ -20,13 +20,6 @@
             <artifactId>loan-core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        
-        <!--
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-jdbc-postgresql</artifactId>
-        </dependency>
-        -->
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-reactive-pg-client</artifactId>
@@ -42,7 +35,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>id.ridwan.minicbs.Main</mainClass>
+                            <mainClass>id.ridwan.minicbs.MonolithMain</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
